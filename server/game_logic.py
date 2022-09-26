@@ -32,6 +32,7 @@ class Board:
     def __init__(self):
         self.width = 20
         self.height = 20
+        self.square_size = 100
 
         def check_if_wall(i, j, size1, size2):
             if i == 0 or j == 0 or i == size1 - 1 or j == size2 - 1:
@@ -59,10 +60,13 @@ class Board:
 
     def convert_to_dict(self, send_walls = False):
         if send_walls:
-            return {"board" : self.square_board}
+            return {
+                "board" : self.square_board,
+                "square_size" : self.square_size
+            }
         
         return {
-            "players": [player.convert_to_dict() for player in self.players],
+            "players": {player.nick: player.convert_to_dict() for player in self.players},
             "bullets": [bullets.convert_to_dict() for bullets in self.bullets],
             "money": [money.convert_to_dict() for money in self.money]
         }

@@ -36,7 +36,7 @@ class Network:
             self.connections[nick] = (conn,adress)
             self.send_data({"Wiadomosc": "Jest OK wchodzisz do gry"},nick)
 
-            self.send_data({"game_board": game_board.get_square_board()},nick)
+            self.send_data(game_board.convert_to_dict(True),nick)
 
             return True
 

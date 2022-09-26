@@ -38,14 +38,16 @@ def main():
             print("Ten nick jest juz w grze")
 
     got = handler.get_data()
-    board = got["game_board"]
- 
 
     print(got.keys())
 
-    pg.init()
+    board = got["board"]
+    square_size = got["square_size"]
+ 
 
-    size_square = 20 #get_monitors()[0].height // len(board)
+
+
+    pg.init()
 
     screen_width = 500
     screen_height = 500
@@ -58,9 +60,11 @@ def main():
         players = recived["players"]
 
         print(players)
-        player = players[0]
+        player = players[nick]
 
         print(recived.keys())
+
+        print(f"Typ playera: {type(player)}" )
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -69,7 +73,7 @@ def main():
             running = False
 
         screen.fill((255, 255, 255))
-        draw_map(screen,(screen_width,screen_height),board,player,size_square)
+        draw_map(screen,(screen_width,screen_height),board,player,square_size)
 
         pg.display.flip()
 
