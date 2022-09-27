@@ -4,6 +4,7 @@ import json
 import client_network 
 from screeninfo import get_monitors
 import time
+import math
 
 black = (0,0,0)
 red = (255,0,0)
@@ -19,6 +20,12 @@ def draw_map(screen, screen_dimensions, board, player, size_square):
                 y = ((j * size_square - player["position_y"]) / FOV_y + 1) * screen_dimensions[1] / 2
                 square_size_to_display = (screen_dimensions[0] / 2) * (size_square / FOV_y) + 1
                 pg.draw.rect(screen,red,(x,y,square_size_to_display,square_size_to_display))
+
+def normalize_vector(vector):
+    # Vector typu krotka
+    x,y = vector
+    vector_lenght = math.sqrt(x*x + y*y)
+    return (x / vector_lenght, y / vector_lenght)
 
 
 
@@ -73,10 +80,13 @@ def main():
         if keys_pressed[pg.K_ESCAPE]:
             running = False
 
+        x_mouse,y_mouse = pg.mouse.get_pos()
+        direction = (x_mouse - screen_width / 2, y_mouse - screen_height / 2)
+        direction = normalize_vector(direction)
 
         handler.send_data({
             "arrows_pressed": [keys_pressed[pg.K_UP],keys_pressed[pg.K_DOWN],keys_pressed[pg.K_LEFT],keys_pressed[pg.K_RIGHT]],
-            "direction": (-1,0),
+            "direction": direction,
             "mouse_pressed": pg.mouse.get_pressed(num_buttons=3),
             "extra_info": []
         })
