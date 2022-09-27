@@ -58,7 +58,6 @@ class Network:
         '''
         data_convert = json.dumps(data).encode("ascii")
         for key,value in self.connections.items():
-            print(value)
             value[0].send(("0" * (5 - len(str(len(data_convert)))) + str(len(data_convert))).encode("ascii"))
             value[0].send(data_convert)
 
@@ -69,3 +68,8 @@ class Network:
         '''
         get_len = int(self.connections[nick][0].recv(5).decode("ascii"))
         return json.loads(self.connections[nick][0].recv(get_len).decode("ascii"))
+
+    def get_from_everyone(self):
+        for key,conn in self.connections.items():
+            get_len = int(conn[0].recv(5).decode("ascii"))
+            yield json.loads(conn[0].recv(get_len).decode("ascii"))

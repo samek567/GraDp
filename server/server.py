@@ -16,13 +16,11 @@ def main():
     running = True
     while running:
         handler.send_to_everyone(game_board.convert_to_dict())
-        '''
-         try:
-            handler.send_data(game_board.convert_to_dict(),"Samuel")
-        except:
-            pass
-        '''
-        time.sleep(1)
+
+        for data_recived in handler.get_from_everyone():
+            print(data_recived)
+
+        time.sleep(1/10)
 
 if __name__ == "__main__":
     main()

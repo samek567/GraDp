@@ -5,8 +5,6 @@ import client_network
 from screeninfo import get_monitors
 import time
 
-from game_logic import Board
-
 black = (0,0,0)
 red = (255,0,0)
 
@@ -66,11 +64,23 @@ def main():
 
         print(f"Typ playera: {type(player)}" )
 
+        keys_pressed = pg.key.get_pressed()
+
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
-        if pg.key.get_pressed()[pg.K_ESCAPE]:
+        if keys_pressed[pg.K_ESCAPE]:
             running = False
+
+
+        handler.send_data({
+            "arrows_pressed": [keys_pressed[pg.K_UP],keys_pressed[pg.K_DOWN],keys_pressed[pg.K_LEFT],keys_pressed[pg.K_RIGHT]],
+            "direction": (-1,0),
+            "mouse_pressed": pg.mouse.get_pressed(num_buttons=3),
+            "extra_info": []
+        })
+
 
         screen.fill((255, 255, 255))
         draw_map(screen,(screen_width,screen_height),board,player,square_size)
