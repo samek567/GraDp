@@ -48,8 +48,8 @@ def main():
 
     board = got["board"]
     square_size = got["square_size"]
- 
 
+    img_player = pg.image.load("./images/player_img.png")
 
 
     pg.init()
@@ -60,6 +60,8 @@ def main():
 
     running = True
     while running:
+
+
         recived = handler.get_data()
 
         players = recived["players"]
@@ -94,6 +96,7 @@ def main():
 
         screen.fill((255, 255, 255))
         draw_map(screen,(screen_width,screen_height),board,player,square_size)
+        screen.blit(img_player,(screen_width / 2 - 200 / 2,screen_height / 2 - 200 / 2))
 
         pg.display.flip()
 
