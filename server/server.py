@@ -6,9 +6,9 @@ import time
 
 def main():
     game_board = game_logic.Board()
-    handler = server_network.Network()
+    handler = server_network.Network(game_board)
 
-    accept_connection_thread = threading.Thread(target=handler.keep_accepting,args=(game_board,))
+    accept_connection_thread = threading.Thread(target=handler.keep_accepting)
     accept_connection_thread.start()
 
     #handler.keep_accepting(game_board)

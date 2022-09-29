@@ -10,6 +10,7 @@ class Player:
         self.direction_x = 1
         self.direction_y = 0
         self.FOV_x = 100
+        self.hit_box_radius = 10 # jezeli pocisk przeleci w odleglosci mniejszej niz hit_box_radius to zakladamy ze trafil postac.
 
     def shoot(self):
         pass
@@ -25,7 +26,8 @@ class Player:
             "v_y": self.v_y,  
             "direction_x": self.direction_x,  
             "direction_y": self.direction_y,
-            "FOV_x": self.FOV_x  
+            "FOV_x": self.FOV_x,
+            "hit_box_radius": self.hit_box_radius
         }
     
 class Board:
@@ -48,6 +50,12 @@ class Board:
 
     def add_player(self,nick):
         self.players.append(Player(nick))
+        
+    def delete_player(self,nick):
+        for i in range(len(self.players)):
+            if self.players[i].nick == nick:
+                self.players.pop(i)
+                return 0
 
     def __str__(self): 
         out = ""
