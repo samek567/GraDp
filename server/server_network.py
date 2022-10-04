@@ -85,6 +85,17 @@ class Network:
         return json.loads(self.connections[nick][0].recv(get_len).decode("ascii"))
 
     def get_from_everyone(self):
-        for key,conn in self.connections.items():
-            get_len = int(conn[0].recv(5).decode("ascii"))
-            yield json.loads(conn[0].recv(get_len).decode("ascii"))
+        out_player = []
+
+        for key,value in self.connections.items():
+            try:
+                get_len = int(value[0].recv(5).decode("ascii"))
+                yield json.loads(value[0].recv(get_len).decode("ascii"))
+            except ConnectionResetError:
+                # Jesli polaczenie zostalo zerwane(gracz wyszedl z gry) to usuwamy go z listy graczy na serwerze.
+                out_player.append(key)
+
+        for key in out_player:
+            self.delete_connection(key)
+           
+           

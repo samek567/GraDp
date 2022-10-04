@@ -20,7 +20,7 @@ def main():
         for data_recived in handler.get_from_everyone():
             print(data_recived)
 
-        time.sleep(1/10)
+        time.sleep(1/100)
 
 if __name__ == "__main__":
     main()
