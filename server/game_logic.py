@@ -15,6 +15,20 @@ class Player:
     def shoot(self):
         pass
 
+    def change_velocity(self,arrows_pressed, dt):
+        if arrows_pressed[0]: # do góry
+            self.v_y += 1 * dt
+        elif arrows_pressed[1]: # W dol
+            self.v_y -= 1 * dt
+        elif arrows_pressed[2]: # W lewo
+            self.v_x += 1 * dt
+        elif arrows_pressed[3]: # W prawo
+            self.v_x -= 1 * dt
+
+    def move(self,dt):
+        self.position_x += self.v_x * dt
+        self.position_y += self.v_y * dt
+
     def convert_to_dict(self):
         return {
             "nick": self.nick,
@@ -65,6 +79,16 @@ class Board:
             out += '\n'
             
         return out
+
+    def update(self, info_from_players, dt):
+        '''
+        To jest funkcja odpowiedzialna za fizykę całej gry.
+        '''
+
+        for player in self.players:
+            player.change_velocity(info_from_players[player.nick]["arrows_pressed"],dt)
+            player.move(dt)
+
 
     def convert_to_dict(self, send_walls = False):
         if send_walls:
