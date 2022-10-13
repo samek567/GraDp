@@ -1,4 +1,3 @@
-from os import access
 import socket
 import json
 

@@ -8,6 +8,7 @@ import math
 
 black = (0,0,0)
 red = (255,0,0)
+green = (0,255,0)
 
 def draw_map(screen, screen_dimensions, board, player, size_square):
 
@@ -15,11 +16,12 @@ def draw_map(screen, screen_dimensions, board, player, size_square):
 
     for i in range(len(board)):
         for j in range(len(board[0])):
-            if board[i][j]:
+            if board[j][i]:
                 x = ((i * size_square - player["position_x"]) / player["FOV_x"] + 1) * screen_dimensions[0] / 2
                 y = ((j * size_square - player["position_y"]) / FOV_y + 1) * screen_dimensions[1] / 2
                 square_size_to_display = (screen_dimensions[0] / 2) * (size_square / FOV_y) + 1
                 pg.draw.rect(screen,red,(x,y,square_size_to_display,square_size_to_display))
+
 
 def normalize_vector(vector):
     # Vector typu krotka
@@ -54,8 +56,8 @@ def main():
 
     pg.init()
 
-    screen_width = 500
-    screen_height = 500
+    screen_width = 1000
+    screen_height = 1000
     screen = pg.display.set_mode((screen_width,screen_height))
 
     running = True
@@ -65,13 +67,14 @@ def main():
         recived = handler.get_data()
 
         players = recived["players"]
+        bullets = recived["bullets"]
 
-        print(players)
+        #print(players)
         player = players[nick]
 
-        print(recived.keys())
+       # print(recived.keys())
 
-        print(f"Typ playera: {type(player)}" )
+        #print(f"Typ playera: {type(player)}" )
 
         keys_pressed = pg.key.get_pressed()
 
@@ -96,7 +99,12 @@ def main():
 
         screen.fill((255, 255, 255))
         draw_map(screen,(screen_width,screen_height),board,player,square_size)
+        #pg.draw.circle(screen,black,(screen_width / 2,screen_height / 2),player["hit_box_radius"])
         screen.blit(img_player,(screen_width / 2 - 200 / 2,screen_height / 2 - 200 / 2))
+
+        for bullet in bullets:
+            pg.draw.circle(screen,green,(bullet["position_x"],bullet["position_y"]),10)
+        print(len(bullets))
 
         pg.display.flip()
 
