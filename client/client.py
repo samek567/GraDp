@@ -29,6 +29,9 @@ def normalize_vector(vector):
     vector_lenght = math.sqrt(x*x + y*y)
     return (x / vector_lenght, y / vector_lenght)
 
+def change_cordinate(screen_dimension,FOV,coordinate,player_coordinate):
+    return ((coordinate - player_coordinate) / FOV + 1) * screen_dimension / 2
+
 
 
 def main():
@@ -71,6 +74,7 @@ def main():
 
         #print(players)
         player = players[nick]
+        FOV_y = player["FOV_x"] * screen_height / screen_width
 
        # print(recived.keys())
 
@@ -103,7 +107,7 @@ def main():
         screen.blit(img_player,(screen_width / 2 - 200 / 2,screen_height / 2 - 200 / 2))
 
         for bullet in bullets:
-            pg.draw.circle(screen,green,(bullet["position_x"],bullet["position_y"]),10)
+            pg.draw.circle(screen,green,(change_cordinate(screen_width,player["FOV_x"],bullet["position_x"],player["position_x"]),change_cordinate(screen_height,FOV_y,bullet["position_y"],player["position_y"])),10)
         print(len(bullets))
 
         pg.display.flip()
