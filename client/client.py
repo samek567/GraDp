@@ -1,3 +1,4 @@
+from email.mime import image
 import socket
 import pygame as pg
 import json
@@ -32,9 +33,10 @@ def normalize_vector(vector):
 def change_cordinate(screen_dimension,FOV,coordinate,player_coordinate):
     return ((coordinate - player_coordinate) / FOV + 1) * screen_dimension / 2
 
-
-
-def main():
+def login():
+    '''
+    To jest funkcja odpowiadajaca za logowanie gracza do gry. Zwracajaca nick i dane o grze.
+    '''
     while True:
         try:
             print("Podaj nick: ")
@@ -43,42 +45,34 @@ def main():
             handler.send_data({"nick" : nick})
             message = handler.get_data()
             print(message["Wiadomosc"])
-            break
+            got = handler.get_data()
+
+            return nick,got["board"],got["square_size"], handler
         except:
             print("Ten nick jest juz w grze")
-
-    got = handler.get_data()
-
-    print(got.keys())
-
-    board = got["board"]
-    square_size = got["square_size"]
-
-    img_player = pg.image.load("./images/player_img.png")
+    
 
 
-    pg.init()
+
+def main():
 
     screen_width = 1000
     screen_height = 1000
     screen = pg.display.set_mode((screen_width,screen_height))
 
+    nick,board,square_size,handler = login()
+    pg.init()
+
+    img_player = pg.image.load("./images/player_img.png")
+
     running = True
     while running:
 
-
         recived = handler.get_data()
-
         players = recived["players"]
         bullets = recived["bullets"]
-
-        #print(players)
         player = players[nick]
         FOV_y = player["FOV_x"] * screen_height / screen_width
-
-       # print(recived.keys())
-
-        #print(f"Typ playera: {type(player)}" )
 
         keys_pressed = pg.key.get_pressed()
 
@@ -102,19 +96,21 @@ def main():
 
 
         screen.fill((255, 255, 255))
+        # To jest funkcja rysujaca mape.
         draw_map(screen,(screen_width,screen_height),board,player,square_size)
-        #pg.draw.circle(screen,black,(screen_width / 2,screen_height / 2),player["hit_box_radius"])
-        screen.blit(img_player,(screen_width / 2 - 200 / 2,screen_height / 2 - 200 / 2))
 
+        # Wyswietlamy pociski
         for bullet in bullets:
             pg.draw.circle(screen,green,(change_cordinate(screen_width,player["FOV_x"],bullet["position_x"],player["position_x"]),change_cordinate(screen_height,FOV_y,bullet["position_y"],player["position_y"])),10)
         print(len(bullets))
 
+        # Wyswietlamy playerow
+        for nick,i in players.items():
+            screen.blit(img_player,(change_cordinate(screen_width,player["FOV_x"],i["position_x"],player["position_x"]) - img_player.get_width() / 2,change_cordinate(screen_width,FOV_y,i["position_y"],player["position_y"]) - img_player.get_height() / 2))
+
         pg.display.flip()
 
     pg.quit()
-
-    print(board)
 
 if __name__ == "__main__":
     main()
