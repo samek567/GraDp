@@ -15,7 +15,7 @@ class Player:
         self.reactivity = 500
         self.shoot_time_break = 0.5
         self.time_to_shoot = 0
-        self.bullet_velocity = 5
+        self.bullet_velocity = 500
 
     def change_velocity(self,arrows_pressed, dt, board, square_size):
         breaking_coef = 0.9

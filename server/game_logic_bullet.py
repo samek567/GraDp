@@ -16,4 +16,9 @@ class Bullet:
             "color": self.color, 
             "damage": self.damage, 
         }
+
+    def move(self,dt):
+        self.position_x += self.v_x * dt
+        self.position_y += self.v_y * dt
+
         
