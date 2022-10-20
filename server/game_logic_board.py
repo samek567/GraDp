@@ -53,8 +53,18 @@ class Board:
                 bullet = player.try_to_shoot(info_from_players[player.nick]["direction"])
                 print(info_from_players[player.nick])
                 if not (type(bullet) is int):
-                    print("Dodajemy kule")
                     self.bullets.append(bullet)
+
+        bullets_to_delete = []
+        for i in range(len(self.bullets)):
+            self.bullets[i].move(dt)
+            if self.square_board[int(self.bullets[i].position_y // self.square_size)][int(self.bullets[i].position_x // self.square_size)]:
+                bullets_to_delete.append(i)
+
+        for i in range(len(bullets_to_delete)-1,-1,-1):
+            self.bullets.pop(bullets_to_delete[i])
+                
+
 
 
     def convert_to_dict(self, send_walls = False):
