@@ -13,6 +13,7 @@ black = (0,0,0)
 red = (255,0,0)
 green = (0,255,0)
 gray = (150,150,150)
+yellow = (150,150,0)
 
 screen_width = 1000
 screen_height = 1000
@@ -88,6 +89,7 @@ def main():
         recived = handler.get_data()
         players = recived["players"]
         bullets = recived["bullets"]
+        money = recived["money"]
         player = players[nick]
         FOV_y = player["FOV_x"] * screen_height / screen_width
 
@@ -133,6 +135,9 @@ def main():
         # Wyswietlamy playerow
         for nick,i in players.items():
             screen.blit(img_player,(change_cordinate(screen_width,player["FOV_x"],i["position_x"],player["position_x"]) - img_player.get_width() / 2,change_cordinate(screen_width,FOV_y,i["position_y"],player["position_y"]) - img_player.get_height() / 2))
+
+        for i in money:
+             pg.draw.circle(screen,yellow,(change_cordinate(screen_width,player["FOV_x"],i[0],player["position_x"]),change_cordinate(screen_height,FOV_y,i[1],player["position_y"])),30)
 
 
         # Wyswietlamy sidebar

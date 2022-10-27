@@ -16,6 +16,8 @@ class Player:
         self.shoot_time_break = 0.5
         self.time_to_shoot = 0
         self.bullet_velocity = 500
+        self.budget = 0
+        self.coin_grab_range = self.hit_box_radius
 
     def change_velocity(self,arrows_pressed, dt, board, square_size):
         breaking_coef = 0.9
@@ -79,5 +81,6 @@ class Player:
             "v_x": self.v_x,  
             "v_y": self.v_y,  
             "FOV_x": self.FOV_x,
-            "hit_box_radius": self.hit_box_radius
+            "hit_box_radius": self.hit_box_radius,
+            "budget": self.budget
         }
